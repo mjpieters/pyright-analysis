@@ -1,0 +1,40 @@
+[project]
+name = "pyright-analysis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Martijn Pieters", email = "mj@zopatista.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "kaleido>=1.0.0rc0",
+    "plotly>=5.24.1",
+    "pydantic>=2.10.4",
+    "typer>=0.15.1",
+]
+
+[project.scripts]
+pyright-analysis = "pyright_analysis.cli:app"
+
+[project.urls]
+homepage = "https://github.com/mjpieters/pyright-analysis"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.lint]
+extend-select = [
+    "I",
+    "UP"
+]
+
+[tool.pyright]
+strict = ["src"]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.391",
+    "ruff>=0.8.4",
+]
