@@ -194,7 +194,7 @@ wheels = [
 
 [[package]]
 name = "pyright-analysis"
-version = "0.1.0"
+version = "1.0.0a0"
 source = { editable = "." }
 dependencies = [
     { name = "kaleido" },
