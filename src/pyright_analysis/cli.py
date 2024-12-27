@@ -234,7 +234,9 @@ def image(
     match filename:
         case None:
             file = Path(".").joinpath(f"{report.package_name}.{format.name}")
-        case BufferedWriter(name="<stdout>"):
+        case BufferedWriter(name="<stdout>"):  # pragma: no cover
+            # pytest and CliRunner mess too much with stdout to bother trying to test
+            # this with anything other than a manual test.
             file = filename
         case _:
             file = filename

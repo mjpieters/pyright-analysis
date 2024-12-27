@@ -1,0 +1,128 @@
+# serializer version: 1
+# name: test_load_json
+  dict({
+    'general_diagnostics': list([
+    ]),
+    'summary': dict({
+      'error_count': 0,
+      'files_analyzed': 376,
+      'information_count': 0,
+      'time_in_sec': 5.506,
+      'warning_count': 0,
+    }),
+    'time': datetime.datetime(2024, 12, 24, 12, 24, 13, 980000, tzinfo=TzInfo(UTC)),
+    'type_completeness': dict({
+      'completeness_score': 0.7998366680277664,
+      'exported_symbol_counts': dict({
+        'with_ambiguous_type': 852,
+        'with_known_type': 9794,
+        'with_unknown_type': 1599,
+      }),
+      'ignore_unknown_types_from_imports': True,
+      'missing_class_doc_string_count': 327,
+      'missing_default_param_count': 0,
+      'missing_function_doc_string_count': 1087,
+      'module_name': 'foobar',
+      'module_root_directory': None,
+      'modules': list([
+        'foobar',
+        'foobar.ham',
+        'foobar.spam',
+        'foobar.spam.vikings',
+      ]),
+      'other_symbol_counts': dict({
+        'with_ambiguous_type': 3,
+        'with_known_type': 90,
+        'with_unknown_type': 16,
+      }),
+      'package_name': 'foobar',
+      'package_root_directory': None,
+      'py_typed_path': None,
+      'symbols': list([
+        dict({
+          'alternate_names': None,
+          'category': <SymbolCategory.module: 'module'>,
+          'diagnostics': list([
+          ]),
+          'is_exported': True,
+          'is_type_ambiguous': False,
+          'is_type_known': True,
+          'name': 'foobar.ham',
+          'reference_count': 1,
+        }),
+        dict({
+          'alternate_names': None,
+          'category': <SymbolCategory.class_: 'class'>,
+          'diagnostics': list([
+          ]),
+          'is_exported': True,
+          'is_type_ambiguous': False,
+          'is_type_known': False,
+          'name': 'foobar.MontyPython',
+          'reference_count': 1,
+        }),
+        dict({
+          'alternate_names': None,
+          'category': <SymbolCategory.function: 'function'>,
+          'diagnostics': list([
+          ]),
+          'is_exported': False,
+          'is_type_ambiguous': False,
+          'is_type_known': False,
+          'name': 'foobar._private_function',
+          'reference_count': 1,
+        }),
+        dict({
+          'alternate_names': None,
+          'category': <SymbolCategory.method: 'method'>,
+          'diagnostics': list([
+            dict({
+              'file': '/.../foobar/__init__.py',
+              'message': '''
+                Type of parameter "first_name" is partially unknown
+                Parameter type is "type[NameString]"
+              ''',
+              'range': dict({
+                'end': dict({
+                  'character': 16,
+                  'line': 180,
+                }),
+                'start': dict({
+                  'character': 8,
+                  'line': 180,
+                }),
+              }),
+              'rule': None,
+              'severity': <SeverityLevel.error: 'error'>,
+            }),
+            dict({
+              'file': '/.../foobar/__init__.py',
+              'message': '''
+                Type of parameter "last_name" is partially unknown
+                  Parameter type is "type[NameString]"
+              ''',
+              'range': dict({
+                'end': dict({
+                  'character': 16,
+                  'line': 180,
+                }),
+                'start': dict({
+                  'character': 8,
+                  'line': 180,
+                }),
+              }),
+              'rule': None,
+              'severity': <SeverityLevel.error: 'error'>,
+            }),
+          ]),
+          'is_exported': True,
+          'is_type_ambiguous': False,
+          'is_type_known': False,
+          'name': 'foobar.MontyPython.__init__',
+          'reference_count': 1,
+        }),
+      ]),
+    }),
+    'version': '1.1.391',
+  })
+# ---
