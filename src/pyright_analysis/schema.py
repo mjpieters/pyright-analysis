@@ -111,11 +111,11 @@ def _unwrap_named_module(value: _NamedModule) -> str:
 
 class TypeCompletenessReport(_Base):
     package_name: str
-    package_root_directory: Path
+    package_root_directory: Path | None
     module_name: SymbolName
-    module_root_directory: Path
+    module_root_directory: Path | None
     ignore_unknown_types_from_imports: bool
-    py_typed_path: Path
+    py_typed_path: Path | None
     exported_symbol_counts: SymbolCounts
     other_symbol_counts: SymbolCounts
     missing_function_doc_string_count: int
