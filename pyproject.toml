@@ -6,7 +6,8 @@ readme = "README.md"
 authors = [
     { name = "Martijn Pieters", email = "mj@zopatista.com" }
 ]
-license = { file = "LICENSE.txt" }
+license = "MIT"
+license-files = ["LICENSE.txt"]
 keywords = [ "pyright", "type-compleness", "visualisation"]
 classifiers = [
     "Development Status :: 3 - Alpha",
