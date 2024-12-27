@@ -25,11 +25,20 @@ dependencies = [
     "typer>=0.15.1",
 ]
 
+[dependency-groups]
+dev = [
+    "pyright>=1.1.391",
+    "ruff>=0.8.4",
+    "towncrier>=24.8.0",
+]
+
 [project.scripts]
 pyright-analysis = "pyright_analysis.cli:app"
 
 [project.urls]
 GitHub = "https://github.com/mjpieters/pyright-analysis"
+Issues = "https://github.com/mjpieters/pyright-analysis/issues"
+Changelog = "https://github.com/mjpieters/pyright-analysis/blob/master/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling"]
@@ -38,17 +47,22 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.sdist]
 only-packages = true
 
+[tool.pyright]
+strict = ["src"]
+
 [tool.ruff.lint]
 extend-select = [
     "I",
     "UP"
 ]
 
-[tool.pyright]
-strict = ["src"]
-
-[dependency-groups]
-dev = [
-    "pyright>=1.1.391",
-    "ruff>=0.8.4",
-]
+[tool.towncrier]
+directory = "changelog.d"
+filename = "CHANGELOG.md"
+template = "changelog.d/towncrier_template.md"
+package_dir = "src"
+package = "pyright_analysis"
+title_format = "## [{name} {version}](https://github.com/mjpieters/pyright-analysis/tree/v{version}) ({project_date})"
+issue_format = "[#{issue}](https://github.com/mjpieters/pyright-analysis/issues/{issue})"
+start_string = "<!-- Towncrier release notes start -->\n"
+underlines = ["", "", ""]
