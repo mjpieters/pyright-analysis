@@ -1,8 +1,7 @@
 from collections.abc import Iterator
 from enum import StrEnum, auto
-from operator import itemgetter
 from pathlib import Path
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Self, TypedDict
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict, GetCoreSchemaHandler
 from pydantic.types import AwareDatetime
@@ -102,6 +101,14 @@ class SymbolCounts(_Base):
     with_unknown_type: int
 
 
+class _NamedModule(TypedDict):
+    name: str
+
+
+def _unwrap_named_module(value: _NamedModule) -> str:
+    return value["name"]
+
+
 class TypeCompletenessReport(_Base):
     package_name: str
     package_root_directory: Path
@@ -115,7 +122,7 @@ class TypeCompletenessReport(_Base):
     missing_class_doc_string_count: int
     missing_default_param_count: int
     completeness_score: float
-    modules: list[Annotated[SymbolName, BeforeValidator(itemgetter("name"))]]
+    modules: list[Annotated[SymbolName, BeforeValidator(_unwrap_named_module)]]
     symbols: list[Symbol]
 
 
