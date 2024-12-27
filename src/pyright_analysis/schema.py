@@ -3,7 +3,7 @@ from enum import StrEnum, auto
 from pathlib import Path
 from typing import Annotated, Any, Self, TypedDict
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, GetCoreSchemaHandler
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, GetCoreSchemaHandler
 from pydantic.types import AwareDatetime
 from pydantic_core import core_schema
 
@@ -63,7 +63,7 @@ class SeverityLevel(StrEnum):
 
 
 class _Base(BaseModel):
-    model_config = ConfigDict(alias_generator=_mixed_case)
+    model_config = ConfigDict(alias_generator=_mixed_case, populate_by_name=True)
 
 
 class Position(_Base):
@@ -91,7 +91,7 @@ class Symbol(_Base):
     is_exported: bool
     is_type_known: bool
     is_type_ambiguous: bool
-    diagnostics: list[Diagnostic]
+    diagnostics: list[Diagnostic] = Field(default_factory=list)
     alternate_names: list[str] | None = None
 
 
@@ -111,11 +111,11 @@ def _unwrap_named_module(value: _NamedModule) -> str:
 
 class TypeCompletenessReport(_Base):
     package_name: str
-    package_root_directory: Path | None
+    package_root_directory: Path | None = None
     module_name: SymbolName
-    module_root_directory: Path | None
+    module_root_directory: Path | None = None
     ignore_unknown_types_from_imports: bool
-    py_typed_path: Path | None
+    py_typed_path: Path | None = None
     exported_symbol_counts: SymbolCounts
     other_symbol_counts: SymbolCounts
     missing_function_doc_string_count: int

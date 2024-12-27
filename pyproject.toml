@@ -29,7 +29,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pyright>=1.1.391",
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4",
     "ruff>=0.8.4",
+    "syrupy>=4.8.0",
     "towncrier>=24.8.0",
 ]
 
@@ -48,8 +51,26 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.sdist]
 only-packages = true
 
+[tool.coverage.run]
+source_pkgs = ["pyright_analysis"]
+branch = true
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "return NotImplemented",
+]
+show_missing = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
 [tool.pyright]
 strict = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov --cov-report xml --cov-report term"
 
 [tool.ruff.lint]
 extend-select = [

@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Development-related files
+/.coverage
+/coverage.xml
+/.pytest_cache/
+/.ruff_cache/
+/.vscode/
