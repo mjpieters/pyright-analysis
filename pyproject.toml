@@ -1,6 +1,5 @@
 [project]
 name = "pyright-analysis"
-version = "1.0.0a0"
 description = "Visualise Python project type completeness"
 readme = "README.md"
 authors = [
@@ -19,6 +18,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.12"
+dynamic = ["version"]
 dependencies = [
     "kaleido>=1.0.0rc0",
     "plotly>=5.24.1",
@@ -47,6 +47,10 @@ Changelog = "https://github.com/mjpieters/pyright-analysis/blob/master/CHANGELOG
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "code"
+path = "src/pyright_analysis/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 only-packages = true

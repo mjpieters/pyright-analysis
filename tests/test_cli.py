@@ -6,6 +6,7 @@ import pytest
 from click.testing import Result
 from typer.testing import CliRunner
 
+from pyright_analysis import __version__
 from pyright_analysis.cli import FileFormat, IncludePlotlyJS, app
 
 
@@ -48,6 +49,11 @@ class TestCli:
         return self.runner.invoke(
             app, args=args, input=self.report if pipe_report else None
         )
+
+    def test_version(self) -> None:
+        result = self.invoke("--version")
+        assert result.exit_code == 0
+        assert result.output.strip().endswith(__version__)
 
     def test_default_command_show(self, pyright_json_report: str) -> None:
         result = self.invoke(pipe_report=True)

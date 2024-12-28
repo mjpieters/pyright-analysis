@@ -12,6 +12,7 @@ from plotly.io.kaleido import (  # pyright: ignore[reportMissingTypeStubs]
 )
 from typer.core import TyperGroup
 
+from . import __version__ as VERSION
 from .schema import PyrightJsonResults, TypeCompletenessReport
 from .treemap import to_treemap
 
@@ -60,6 +61,27 @@ app = typer.Typer(
         """
     ),
 )
+
+
+def version_callback(value: bool) -> None:
+    if value:
+        typer.echo(f"pyright-analysis v{VERSION}")
+        raise typer.Exit()
+
+
+@app.callback()
+def app_callback(
+    _version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version",
+            help="Show program version and exit",
+            callback=version_callback,
+            is_eager=True,
+        ),
+    ] = None,
+) -> None:
+    pass
 
 
 @app.command()
