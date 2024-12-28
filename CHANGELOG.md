@@ -14,6 +14,24 @@
 
 <!-- Towncrier release notes start -->
 
+## [Pyright Analysis 1.0.0rc1](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0rc1) (2024-12-28)
+
+
+### Features
+
+- Add a --version option ([#14](https://github.com/mjpieters/pyright-analysis/issues/14))
+
+
+
+### Bugfixes
+
+- Improve handling of kaleido browser detection failures in the cli, providing
+  feedback only when trying to export a graph to an image. ([#1](https://github.com/mjpieters/pyright-analysis/issues/1))
+- Avoid using itemgetter with Pydantic, fixes pyright JSON parsing in Python
+  3.12. ([#2](https://github.com/mjpieters/pyright-analysis/issues/2))
+- Mark all optional fields in the pyright typeCompletenessReport object as such. ([#3](https://github.com/mjpieters/pyright-analysis/issues/3))
+
+
 ## [Pyright Analysis 1.0.0a0](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0a0) (2024-12-26)
 
 _Initial release_.
