@@ -1,0 +1,188 @@
+name: Python checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  merge_group:
+
+env:
+  FORCE_COLOR: 1
+
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    name: "Python linting"
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python 🐍
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Install dependencies
+      run: |
+        uv sync
+        echo "$PWD/.venv/bin" >> $GITHUB_PATH
+    
+    - name: Check file formatting
+      uses: astral-sh/ruff-action@31a518504640beb4897d0b9f9e50a2a9196e75ba # v3.0.1
+      with:
+        args: "format --check"
+        
+    - name: Lint with ruff
+      env:
+        RUFF_OUTPUT_FORMAT: github
+      run: |
+        ruff check
+
+    - name: Typecheck with pyright
+      uses: jakebailey/pyright-action@b5d50e5cde6547546a5c4ac92e416a8c2c1a1dfe # v2.3.2
+      with:
+        version: PATH
+  
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        python-version: ["3.12", "3.13"]
+    
+    name: Python tests (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a  # v5.1.0
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Python ${{ matrix.python-version }} 🐍
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        uv sync
+        
+    - name: Test with pytest
+      run: |
+        uv run pytest -v --junitxml=junit.xml -o junit_family=legacy
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@1e68e06f1dbfde0e4cefc87efeba9e4643565303 # v5.1.2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@9739113ad922ea0a9abb4b2c0f8bf6a4aa8ef820  # v1.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+  
+  test-summary:
+    name: Test matrix status
+    runs-on: ubuntu-latest
+    needs: 
+      - linting
+      - tests
+    if: always()
+    steps:
+    - name: Decide whether the needed jobs succeeded or failed
+      uses: re-actors/alls-green@05ac9388f0aebcb5727afa17fcccfecd6f8ec5fe # v1.2.2
+      with:
+        jobs: ${{ toJSON(needs) }}
+
+
+  build:
+    name: Build distribution 📦 
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    needs:
+      - test-summary
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python 🐍
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Install dependencies
+      run: |
+        uv sync
+
+    - name: Build the Python 🐍 binary wheel and source tarball 📦
+      run: |
+        uv build
+        rm -f dist/.gitignore  # get-releasenotes can't handle non-dist files here
+
+    - name: Check build
+      run: uvx twine check --strict dist/*
+
+    - name: Prepare Release Note
+      id: note
+      uses: aio-libs/get-releasenote@v1.4.5
+      with:
+        changes_file: CHANGELOG.md
+        output_file: release_notes.md
+        version_file: src/pyright_analysis/__init__.py
+        start_line: '<!-- Towncrier release notes start -->'
+        head_line: '## \[{name} {version}\]\(https://github\.com/mjpieters/pyright-analysis/tree/v[^)]+\) \({date}\)'
+        name: Pyright Analysis
+        dist_dir: dist
+
+    - name: Store the Python 🐍 distribution 📦
+      uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
+      with:
+        name: python-package-distributions
+        path: |
+          dist/
+          release_notes.md
+          
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    needs:
+      - build
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pyright-analysis
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+    - name: Download Python 🐍 distribution 📦
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      with:
+        name: python-package-distributions
+
+    - name: Publish Python 🐍 distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@67339c736fd9354cd4f8cb0b744f2b82a74b5c70 # v1.12.3
+
+    - name: GitHub release
+      uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
+      with:
+        name: Pyright Analysis ${{ steps.note.outputs.version }}
+        artifacts: dist/*
+        prerelease: ${{ steps.note.outputs.prerelease }}
+        token: 

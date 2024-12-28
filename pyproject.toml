@@ -84,6 +84,7 @@ extend-select = [
 
 [tool.towncrier]
 directory = "changelog.d"
+name = "Pyright Analysis"
 filename = "CHANGELOG.md"
 template = "changelog.d/towncrier_template.md"
 package_dir = "src"

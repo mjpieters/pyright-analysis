@@ -14,6 +14,6 @@
 
 <!-- Towncrier release notes start -->
 
-## [Pyright-analysis 1.0.0a0](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0a0) (2024-12-26)
+## [Pyright Analysis 1.0.0a0](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0a0) (2024-12-26)
 
 _Initial release_.
