@@ -300,7 +300,7 @@ wheels = [
 
 [[package]]
 name = "pyright-analysis"
-version = "1.0.0rc0"
+version = "1.0.0rc1"
 source = { editable = "." }
 dependencies = [
     { name = "kaleido" },
