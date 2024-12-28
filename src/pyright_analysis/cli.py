@@ -2,19 +2,38 @@ import os
 from enum import StrEnum, auto
 from io import BufferedWriter, TextIOWrapper
 from pathlib import Path
-from typing import IO, Annotated, Any
+from typing import IO, Annotated, Any, NamedTuple
 
 import click
 import typer
 from click import Context, File, Parameter
-from plotly.io.kaleido import (  # pyright: ignore[reportMissingTypeStubs]
-    scope as kaleido_scope,
-)
 from typer.core import TyperGroup
 
 from . import __version__ as VERSION
 from .schema import PyrightJsonResults, TypeCompletenessReport
 from .treemap import to_treemap
+
+try:
+    from plotly.io.kaleido import (  # pyright: ignore[reportMissingTypeStubs]
+        scope as kaleido_scope,
+    )
+except RuntimeError as exc:  # pragma: no coverage
+    if "Kaleido will try to detect it automatically" not in exc.args[0]:
+        raise
+
+    # Kaleido tried to find Chrome and failed; handle this separately
+    # when attempting to use the image subcommand
+
+    class _scope(NamedTuple):
+        default_width: int | None = None
+        default_height: int | None = None
+        default_scale: float | None = None
+
+    kaleido_scope = _scope()
+    _kaleido_configured = False
+else:
+    _kaleido_configured = True
+
 
 PLOTLY_CONFIG = {"displaylogo": False}
 
@@ -235,13 +254,15 @@ def image(
         ),
     ] = FileFormat.png,
     width: Annotated[
-        int, typer.Option(min=1, help="The width of the image, in layout pixels.")
+        int | None,
+        typer.Option(min=1, help="The width of the image, in layout pixels."),
     ] = kaleido_scope.default_width,
     height: Annotated[
-        int, typer.Option(min=1, help="The height of the image, in layout pixels.")
+        int | None,
+        typer.Option(min=1, help="The height of the image, in layout pixels."),
     ] = kaleido_scope.default_height,
     scale: Annotated[
-        float,
+        float | None,
         typer.Option(
             min=0,
             help=(
@@ -251,7 +272,21 @@ def image(
         ),
     ] = kaleido_scope.default_scale,
 ) -> None:
-    """Render the graph as an image."""
+    """Render the graph as an image.
+
+    Image rendering requires that a Chromium-based browser is installed locally;
+    by default this looks for a Chrome installation. Set the BROWSER_PATH environment
+    variable to the path of an alternative Chromium-based browser (e.g. Brave) to
+    configure this.
+
+    """
+    if not _kaleido_configured:
+        raise click.UsageError(
+            "Image rendering requires a Chromium-based browser installation "
+            "but none was detected. Please set the BROWSER_PATH environment "
+            "variable to an absolute path of such a browser before running "
+            "this command."
+        )
     file_format = format
     match filename:
         case None:

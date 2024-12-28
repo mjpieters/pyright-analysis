@@ -40,6 +40,8 @@ class TestCli:
             mock.patch(
                 "plotly.graph_objects.Figure.write_image", autospec=True
             ) as self.mock_write_image,
+            # tests should be runnable without requiring a Chrome browser installation
+            mock.patch("pyright_analysis.cli._kaleido_configured", new=True),
         ):
             yield
 
@@ -136,6 +138,15 @@ class TestCli:
         self.mock_write_image.assert_called_once()
         call = self.mock_write_image.call_args
         assert call.args[1].name == "foobar.png"
+
+    def test_image_command_no_chromium(self) -> None:
+        with mock.patch("pyright_analysis.cli._kaleido_configured", new=False):
+            result = self.invoke("image", pipe_report=True)
+            assert result.exit_code == 2
+            assert (
+                "Image rendering requires a Chromium-based browser installation"
+                in result.output
+            )
 
     def test_image_command_filename_extension_ignores_format(self) -> None:
         result = self.invoke(
