@@ -41,8 +41,19 @@ jobs:
       env:
         FORCE_COLOR: 1
       run: |
-        uv run pytest -v
+        uv run pytest -v --junitxml=junit.xml -o junit_family=legacy
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@1e68e06f1dbfde0e4cefc87efeba9e4643565303 # v5.1.2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@9739113ad922ea0a9abb4b2c0f8bf6a4aa8ef820  # v1.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+  
   test-summary:
     name: Test matrix status
     runs-on: ubuntu-latest
