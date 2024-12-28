@@ -141,7 +141,7 @@ jobs:
 
     - name: Prepare Release Note
       id: note
-      uses: aio-libs/get-releasenote@v1.4.5
+      uses: aio-libs/get-releasenote@b0fcc7f3e5f5cc7c8b01e2f75516b1732f6bd8b2 # v1.4.5
       with:
         changes_file: CHANGELOG.md
         output_file: release_notes.md
