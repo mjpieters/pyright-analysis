@@ -166,14 +166,17 @@ def html(
     match filename:
         case None:
             file = Path(".").joinpath(f"{report.package_name}.html")
+            target = str(file)
         case TextIOWrapper(name="<stdout>"):
             file = filename
             if include_js is IncludePlotlyJS.directory:
                 raise click.UsageError(
                     "Can't write out javascript when writing to stdout"
                 )
+            target = "<stdout>"
         case _:
             file = filename
+            target = str(file.name)
     figure = to_treemap(report)
     match include_js:
         case IncludePlotlyJS.embed:
@@ -189,6 +192,7 @@ def html(
         div_id=div_id,
         config=PLOTLY_CONFIG,
     )
+    typer.secho(f"Exported graph to HTML: {target}")
 
 
 @app.command()
@@ -212,11 +216,14 @@ def json(
     match filename:
         case None:
             file = Path(".").joinpath(f"{report.package_name}.json")
+            target = str(file)
         case _:
             file = filename
+            target = str(file.name)
 
     figure = to_treemap(report)
     figure.write_json(file, pretty=pretty)  # pyright: ignore[reportUnknownMemberType]
+    typer.secho(f"Exported graph to JSON: {target}")
 
 
 class FileFormat(StrEnum):
@@ -291,16 +298,20 @@ def image(
     match filename:
         case None:
             file = Path(".").joinpath(f"{report.package_name}.{format.name}")
+            target = str(file)
         case BufferedWriter(name="<stdout>"):  # pragma: no cover
             # pytest and CliRunner mess too much with stdout to bother trying to test
             # this with anything other than a manual test.
             file = filename
+            target = "<stdout>"
         case _:
             file = filename
             if file.name.endswith(tuple("." + ext for ext in FileFormat.__members__)):
                 file_format = None
+            target = str(file.name)
 
     figure = to_treemap(report)
     figure.write_image(  # pyright: ignore[reportUnknownMemberType]
         file, format=file_format, width=width, height=height, scale=scale
     )
+    typer.secho(f"Exported graph to an image: {target}")

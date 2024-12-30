@@ -73,6 +73,7 @@ class TestCli:
         self.mock_write_html.assert_called_once()
         call = self.mock_write_html.call_args
         assert call.args[1].name == "foobar.html"
+        assert result.output.strip().endswith("HTML: foobar.html")
 
     def test_html_command_filename(self, pyright_json_report) -> None:
         result = self.invoke(
@@ -82,6 +83,7 @@ class TestCli:
         self.mock_write_html.assert_called_once()
         call = self.mock_write_html.call_args
         assert call.args[1].name == "/spam/spam/wonderful_spam.html"
+        assert result.output.strip().endswith("HTML: /spam/spam/wonderful_spam.html")
 
     @pytest.mark.parametrize(
         "include_js,expected",
@@ -108,6 +110,7 @@ class TestCli:
         self.mock_write_html.assert_called_once()
         call = self.mock_write_html.call_args
         assert call.args[1].name == "<stdout>"
+        assert result.output.strip().endswith("HTML: <stdout>")
 
     def test_html_command_stdout_directory(self, pyright_json_report: str) -> None:
         result = self.invoke(
@@ -122,15 +125,17 @@ class TestCli:
         self.mock_write_json.assert_called_once()
         call = self.mock_write_json.call_args
         assert call.args[1].name == "foobar.json"
+        assert result.output.strip().endswith("JSON: foobar.json")
 
     def test_json_command_filename(self, pyright_json_report: str) -> None:
         result = self.invoke(
-            ["json", "--filename", "/spam/spam/wonderful_spam.html"], pipe_report=True
+            ["json", "--filename", "/spam/spam/wonderful_spam.json"], pipe_report=True
         )
         assert result.exit_code == 0
         self.mock_write_json.assert_called_once()
         call = self.mock_write_json.call_args
-        assert call.args[1].name == "/spam/spam/wonderful_spam.html"
+        assert call.args[1].name == "/spam/spam/wonderful_spam.json"
+        assert result.output.strip().endswith("JSON: /spam/spam/wonderful_spam.json")
 
     def test_image_command(self) -> None:
         result = self.invoke(["image"], pipe_report=True)
@@ -138,6 +143,7 @@ class TestCli:
         self.mock_write_image.assert_called_once()
         call = self.mock_write_image.call_args
         assert call.args[1].name == "foobar.png"
+        assert result.output.strip().endswith("image: foobar.png")
 
     def test_image_command_no_chromium(self) -> None:
         with mock.patch("pyright_analysis.cli._kaleido_configured", new=False):
