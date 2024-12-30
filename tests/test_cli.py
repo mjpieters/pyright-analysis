@@ -145,6 +145,15 @@ class TestCli:
         assert call.args[1].name == "foobar.png"
         assert result.output.strip().endswith("image: foobar.png")
 
+    def test_image_command_only_format(self) -> None:
+        result = self.invoke(["image", "--format", "svg"], pipe_report=True)
+        assert result.exit_code == 0
+        self.mock_write_image.assert_called_once()
+        call = self.mock_write_image.call_args
+        assert call.args[1].name == "foobar.svg"
+        assert call.kwargs["format"] is FileFormat.svg
+        assert result.output.strip().endswith("image: foobar.svg")
+
     def test_image_command_no_chromium(self) -> None:
         with mock.patch("pyright_analysis.cli._kaleido_configured", new=False):
             result = self.invoke("image", pipe_report=True)
@@ -154,7 +163,17 @@ class TestCli:
                 in result.output
             )
 
-    def test_image_command_filename_extension_ignores_format(self) -> None:
+    def test_image_command_filename_extension_sets_format(self) -> None:
+        result = self.invoke(
+            ["image", "--filename", "/spam/spam/wonderful_spam.svg"],
+            pipe_report=True,
+        )
+        assert result.exit_code == 0
+        self.mock_write_image.assert_called_once()
+        call = self.mock_write_image.call_args
+        assert call.kwargs["format"] is FileFormat.svg
+
+    def test_image_command_explicit_format_trumps_extension(self) -> None:
         result = self.invoke(
             ["image", "--filename", "/spam/spam/wonderful_spam.svg", "--format", "pdf"],
             pipe_report=True,
@@ -162,30 +181,14 @@ class TestCli:
         assert result.exit_code == 0
         self.mock_write_image.assert_called_once()
         call = self.mock_write_image.call_args
-        assert call.kwargs["format"] is None
+        assert call.kwargs["format"] is FileFormat.pdf
 
-    def test_image_command_valid_filename_extension_ignores_format(self) -> None:
+    def test_image_command_invalid_filename_extension_sets_format_png(self) -> None:
         result = self.invoke(
-            ["image", "--filename", "/spam/spam/wonderful_spam.svg", "--format", "pdf"],
+            ["image", "--filename", "/spam/spam/wonderful_spam.dat"],
             pipe_report=True,
         )
         assert result.exit_code == 0
         self.mock_write_image.assert_called_once()
         call = self.mock_write_image.call_args
-        assert call.kwargs["format"] is None
-
-    def test_image_command_invalid_filename_extension_keeps_format(self) -> None:
-        result = self.invoke(
-            [
-                "image",
-                "--filename",
-                "/spam/spam/wonderful_spam.dat",
-                "--format",
-                "webp",
-            ],
-            pipe_report=True,
-        )
-        assert result.exit_code == 0
-        self.mock_write_image.assert_called_once()
-        call = self.mock_write_image.call_args
-        assert call.kwargs["format"] == FileFormat.webp
+        assert call.kwargs["format"] == FileFormat.png

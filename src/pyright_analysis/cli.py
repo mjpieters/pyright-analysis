@@ -2,7 +2,7 @@ import os
 from enum import StrEnum, auto
 from io import BufferedWriter, TextIOWrapper
 from pathlib import Path
-from typing import IO, Annotated, Any, NamedTuple
+from typing import IO, Annotated, Any, NamedTuple, Self, overload
 
 import click
 import typer
@@ -234,6 +234,23 @@ class FileFormat(StrEnum):
     svg = auto()
     pdf = auto()
 
+    @overload
+    @classmethod
+    def from_filename(cls, filename: str | os.PathLike[str], default: Self) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_filename(
+        cls, filename: str | os.PathLike[str], default: None = None
+    ) -> Self | None: ...
+
+    @classmethod
+    def from_filename(
+        cls, filename: str | os.PathLike[str], default: Self | None = None
+    ) -> Self | None:
+        ext = os.path.splitext(filename)[-1].lstrip(".")
+        return cls.__members__.get(ext, default)
+
 
 @app.command()
 def image(
@@ -251,15 +268,17 @@ def image(
         ),
     ] = None,
     format: Annotated[
-        FileFormat,
+        FileFormat | None,
         typer.Option(
             help=(
                 "What type of image to generate. If a filename is given that "
                 "ends in a support image type extension, this argument is "
-                "ignored."
+                "ignored. Defaults to PNG if no filename is given or stdout "
+                "is selected."
             ),
+            show_default=False,
         ),
-    ] = FileFormat.png,
+    ] = None,
     width: Annotated[
         int | None,
         typer.Option(min=1, help="The width of the image, in layout pixels."),
@@ -294,9 +313,10 @@ def image(
             "variable to an absolute path of such a browser before running "
             "this command."
         )
-    file_format = format
     match filename:
         case None:
+            if format is None:
+                format = FileFormat.png
             file = Path(".").joinpath(f"{report.package_name}.{format.name}")
             target = str(file)
         case BufferedWriter(name="<stdout>"):  # pragma: no cover
@@ -304,14 +324,16 @@ def image(
             # this with anything other than a manual test.
             file = filename
             target = "<stdout>"
+            if format is None:
+                format = FileFormat.png
         case _:
             file = filename
-            if file.name.endswith(tuple("." + ext for ext in FileFormat.__members__)):
-                file_format = None
             target = str(file.name)
+            if format is None:
+                format = FileFormat.from_filename(target, FileFormat.png)
 
     figure = to_treemap(report)
     figure.write_image(  # pyright: ignore[reportUnknownMemberType]
-        file, format=file_format, width=width, height=height, scale=scale
+        file, format=format, width=width, height=height, scale=scale
     )
     typer.secho(f"Exported graph to an image: {target}")
