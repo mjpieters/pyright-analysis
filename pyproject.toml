@@ -63,6 +63,7 @@ branch = true
 exclude_also = [
     "if TYPE_CHECKING:",
     "return NotImplemented",
+    "@overload",
 ]
 show_missing = true
 
