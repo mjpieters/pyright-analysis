@@ -14,6 +14,21 @@
 
 <!-- Towncrier release notes start -->
 
+## [Pyright Analysis 1.0.0rc1](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0rc1) (2024-12-30)
+
+
+### Features
+
+- When exporting to HTML, JSON or an image the target filename is reported to
+  stderr. ([#26](https://github.com/mjpieters/pyright-analysis/issues/26))
+
+
+
+### Bugfixes
+
+- Fix format selection for image exports with an explicit filename. ([#24](https://github.com/mjpieters/pyright-analysis/issues/24))
+
+
 ## [Pyright Analysis 1.0.0rc1](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0rc1) (2024-12-28)
 
 
