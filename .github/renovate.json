@@ -2,5 +2,10 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices"
-  ]
+  ],
+  "pep723": {
+    "fileMatch": [
+      "(^|/)\\.github/scripts/convert_attestations_to_sigstore\\.py$"
+    ]
+  }
 }

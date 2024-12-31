@@ -184,6 +184,9 @@ jobs:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
       contents: write  # required for creating GH releases
       attestations: write  # required for uploading sigstore attestations to the Github API
+    env:
+      CONVERT_TO_SIGSTORE: .github/scripts/convert_attestations_to_sigstore.py
+
     steps:
     - name: Download Python 🐍 distribution 📦
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -199,11 +202,14 @@ jobs:
       uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         enable-cache: true
-        cache-dependency-glob: .github/scripts/convert_attestations_to_sigstore.py
+        cache-dependency-glob: ${{ env.CONVERT_TO_SIGSTORE }}
 
     - name: Convert attestations to sigstore bundles
       run: |
-        uv run .github/scripts/convert_attestations_to_sigstore.py dist/*.attestation
+        # tell uv to only use packages released, at the latest, the time of the last
+        # commit of the script. This should help reproducibility.
+        COMMITTED="$(git log -1 --format=%cI "$CONVERT_TO_SIGSTORE")"
+        uv run --exclude-newer="$COMMITTED" "$CONVERT_TO_SIGSTORE" dist/*.attestation
 
     - name: Upload attestations to GitHub and summarise
       id: github-attestations
