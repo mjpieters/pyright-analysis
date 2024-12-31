@@ -6,6 +6,8 @@
 [![Built with uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Checked with Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with Pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://microsoft.github.io/pyright/)
+[![Python checks](https://github.com/mjpieters/pyright-analysis/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mjpieters/pyright-analysis/actions/workflows/ci-cd.yml)
+[![Coverage](https://codecov.io/gh/mjpieters/pyright-analysis/graph/badge.svg?token=ZRZO4XRBP6)](https://codecov.io/gh/mjpieters/pyright-analysis)
 
 A simple cli tool to visualise the state of a Python project's _type completeness_, from the output of pyright's [`--outputjson --verifytypes` command](https://microsoft.github.io/pyright/#/typed-libraries?id=verifying-type-completeness):
 
