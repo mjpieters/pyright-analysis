@@ -11,5 +11,8 @@
     "fileMatch": [
       "(^|/)\\.github/scripts/convert_attestations_to_sigstore\\.py$"
     ]
+  },
+  "pre-commit": {
+    "enabled": true
   }
 }
