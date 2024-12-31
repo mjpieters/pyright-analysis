@@ -1,6 +1,6 @@
 # Generate a treemap graph from Pyright verifytypes output.
 
-[![PyPI version](https://img.shields.io/pypi/v/pyright-analysis.svg)](https://pypi.python.org/pypi/ruff)
+[![PyPI version](https://img.shields.io/pypi/v/pyright-analysis.svg)](https://pypi.python.org/project/pyright-analysis)
 [![License](https://img.shields.io/pypi/l/pyright-analysis.svg)](https://pypi.python.org/pypi/ruff)
 ![Python versions supported](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fmjpieters%2Fpyright-analysis%2Fmain%2Fpyproject.toml)
 [![Built with uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
