@@ -6,7 +6,6 @@
 # ]
 # [tool.uv]
 # prerelease = "allow"  # necessary for sigstore dependencies
-# exclude-newer = "2024-12-30T13:21:53Z"
 # ///
 
 import argparse
