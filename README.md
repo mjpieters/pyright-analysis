@@ -33,7 +33,7 @@ This will open the resulting graph in your browser.
 
 Full help documentation is available on the command-line:
 
-![pyright-analysis help output](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/cmd-help.png)  <!-- created with termshot cli -->
+![pyright-analysis help output](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/cmd-help.png)  <!-- created with termshot --columns 100 --show-cmd -->
 
 ## Features
 
