@@ -43,3 +43,15 @@ Full help documentation is available on the command-line:
     - HTML div snippet with configurable HTML id.
     - Static image export as PNG, JPG, WebP, SVG or PDF.
     - Plotly JSON graph representation.
+
+## Development
+
+This project uses [`uv`](https://docs.astral.sh/uv/) to handle Python dependencies and environments; use `uv sync` to get an up-to-date virtualenv with all dependencies. This includes development dependencies such as [Ruff](https://docs.astral.sh/ruff/) (used for linting and formatting) and [Pyright](https://microsoft.github.io/pyright/) (used to validate type annotations).
+
+### Linting and formatting
+
+While PRs and commits on GitHub are checked for linting and formatting issues, it's easier to check for issues locally first. After running `uv sync`, run `uv run pre-commit install` to install [pre-commit](https://pre-commit.com/) hooks that will run these tools and format your changes automatically on commits. These hooks also run `uv sync` whenever you working tree changes.
+
+### Testing
+
+This project uses `pytest` to run its tests: `uv run pytest`.
