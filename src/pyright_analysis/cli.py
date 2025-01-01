@@ -192,7 +192,7 @@ def html(
         div_id=div_id,
         config=PLOTLY_CONFIG,
     )
-    typer.secho(f"Exported graph to HTML: {target}")
+    typer.echo(f"Exported graph to HTML: {target}", err=True)
 
 
 @app.command()
@@ -223,7 +223,7 @@ def json(
 
     figure = to_treemap(report)
     figure.write_json(file, pretty=pretty)  # pyright: ignore[reportUnknownMemberType]
-    typer.secho(f"Exported graph to JSON: {target}")
+    typer.echo(f"Exported graph to JSON: {target}", err=True)
 
 
 class FileFormat(StrEnum):
@@ -336,4 +336,4 @@ def image(
     figure.write_image(  # pyright: ignore[reportUnknownMemberType]
         file, format=format, width=width, height=height, scale=scale
     )
-    typer.secho(f"Exported graph to an image: {target}")
+    typer.echo(f"Exported graph to an image: {target}", err=True)
