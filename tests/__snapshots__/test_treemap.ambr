@@ -124,7 +124,7 @@
         "t": 75
       },
       "title": {
-        "text": "Pyright type completess report for foobar"
+        "text": "Pyright type completeness report for foobar"
       },
       "template": {
         "data": {

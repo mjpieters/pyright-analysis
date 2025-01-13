@@ -146,7 +146,7 @@ def html(
         IncludePlotlyJS,
         typer.Option(
             help=(
-                "Wether or not to embed the Plotly JS library in the output. "
+                "Whether or not to embed the Plotly JS library in the output. "
                 "If set to 'cdn', a script tag referencing the CDN-hosted "
                 "version is used. 'directory' puts the JS file next to the "
                 "HTML file in the same directory, and 'require' the script "

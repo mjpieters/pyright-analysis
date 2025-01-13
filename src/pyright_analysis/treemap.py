@@ -92,7 +92,7 @@ def to_treemap(report: TypeCompletenessReport) -> go.Figure:
         layout=go.Layout(
             margin=go.layout.Margin(t=75, l=25, r=25, b=25),
             title=go.layout.Title(
-                text=f"Pyright type completess report for {report.package_name}"
+                text=f"Pyright type completeness report for {report.package_name}"
             ),
             coloraxis=go.layout.Coloraxis(
                 colorbar=go.layout.coloraxis.ColorBar(tickformat=".0%"),
