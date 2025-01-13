@@ -24,7 +24,7 @@ $ uv tool install pyright
 $ uv tool install pyright-analysis
 ```
 
-Then generate a type compleness JSON report for your package, and transform the report into a graph:
+Then generate a type completeness JSON report for your package, and transform the report into a graph:
 
 ```sh
 $ pyright --outputjson --ignoreexternal --verifytypes PACKAGE > PACKAGE.json
@@ -35,7 +35,7 @@ This will open the resulting graph in your browser.
 
 Full help documentation is available on the command-line:
 
-![pyright-analysis help output](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/cmd-help.png)  <!-- created with termshot --columns 100 --show-cmd -->
+![pyright-analysis help output](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/cmd-help.png)  <!-- refresh with `task dev:readme:refresh-screenshot`  -->
 
 ## Features
 
