@@ -66,6 +66,21 @@
       }
     ],
     "layout": {
+      "annotations": [
+        {
+          "font": {
+            "size": 20
+          },
+          "showarrow": false,
+          "text": "Pyright type completeness report for foobar",
+          "x": 0.5,
+          "xanchor": "center",
+          "xref": "paper",
+          "y": 1.04,
+          "yanchor": "bottom",
+          "yref": "paper"
+        }
+      ],
       "coloraxis": {
         "colorbar": {
           "tickformat": ".0%"
@@ -117,6 +132,13 @@
           ]
         ]
       },
+      "legend": {
+        "borderwidth": 1,
+        "x": 1,
+        "xanchor": "right",
+        "y": 1,
+        "yanchor": "top"
+      },
       "margin": {
         "b": 25,
         "l": 25,
@@ -124,7 +146,16 @@
         "t": 75
       },
       "title": {
-        "text": "Pyright type completeness report for foobar"
+        "font": {
+          "size": 12,
+          "style": "italic"
+        },
+        "text": "Generated with \u003ca href=\"https:\u002f\u002fgithub.com\u002fmjpieters\u002fpyright-analysis\"\u003epyright-analysis v1.0.0rc3\u003c\u002fa\u003e",
+        "x": 1,
+        "xanchor": "right",
+        "xref": "paper",
+        "y": 0.005,
+        "yref": "container"
       },
       "template": {
         "data": {
