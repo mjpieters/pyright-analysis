@@ -11,7 +11,7 @@
 
 A simple cli tool to visualise the state of a Python project's _type completeness_, from the output of pyright's [`--outputjson --verifytypes` command](https://microsoft.github.io/pyright/#/typed-libraries?id=verifying-type-completeness):
 
-![Sample graph output for prefect](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/graph-screenshot.png)  <!-- 1980 × 1352 screenshot from Firefox, wrapped with https://shoteasy.fun/screenshot-beautifier/ to 4x3 ratio (2400 × 1800) -->
+![Sample graph output for prefect](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/graph-screenshot.png)  <!-- refresh with `task dev:readme:refresh-graph` -->
 
 The interactive graph depicts a projects modules as a tree, with each the size of each module based on the number of exported symbols.
 

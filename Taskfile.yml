@@ -18,6 +18,22 @@ tasks:
             termshot --columns 100 --show-cmd --filename assets/cmd-help.png -- \
               {{.PROJECT_NAME}} --help \
           && echo -e '\033[1;92mScreenshot generated\033[0m'
+  
+  dev:readme:refresh-graph:
+    desc: Re-generate the graph screenshot
+    preconditions:
+      - sh: type "magick" &>/dev/null
+        msg: Please install imagemagick, see https://imagemagick.org/script/download.php
+    vars:
+      TEMPGRAPH:
+        sh: mktemp -t graph.png
+    cmds:
+      - defer: rm -f "{{.TEMPGRAPH}}"
+      - |
+        uv run pyright-analysis image assets/prefect-sample-report.json \
+           --width 983 --height 671 --scale 2.3 \
+           --format png --filename "{{.TEMPGRAPH}}"
+        magick assets/framing.png \( -page +70+190 "{{.TEMPGRAPH}}" \) -flatten assets/graph-screenshot.png
 
   dev:install-precommit:
     desc: Install pre-commit into local git checkout
