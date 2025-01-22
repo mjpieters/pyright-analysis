@@ -14,12 +14,20 @@
 
 <!-- Towncrier release notes start -->
 
+## [Pyright Analysis 1.0.0](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0) (2025-01-22)
+
+
+### Features
+
+- Added a footer linking back to the project ([#71](https://github.com/mjpieters/pyright-analysis/issues/71))
+
+
 ## [Pyright Analysis 1.0.0rc3](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0rc3) (2025-01-01)
 
 
 ### Bugfixes
 
-- Output inteded for stderr now actually goes to stderr. ([#42](https://github.com/mjpieters/pyright-analysis/issues/42))
+- Output intended for stderr now actually goes to stderr. ([#42](https://github.com/mjpieters/pyright-analysis/issues/42))
 
 
 ## [Pyright Analysis 1.0.0rc2](https://github.com/mjpieters/pyright-analysis/tree/v1.0.0rc2) (2025-01-01)

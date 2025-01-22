@@ -150,7 +150,7 @@
           "size": 12,
           "style": "italic"
         },
-        "text": "Generated with \u003ca href=\"https:\u002f\u002fgithub.com\u002fmjpieters\u002fpyright-analysis\"\u003epyright-analysis v1.0.0rc3\u003c\u002fa\u003e",
+        "text": "Generated with \u003ca href=\"https:\u002f\u002fgithub.com\u002fmjpieters\u002fpyright-analysis\"\u003epyright-analysis v1.0.0\u003c\u002fa\u003e",
         "x": 1,
         "xanchor": "right",
         "xref": "paper",
