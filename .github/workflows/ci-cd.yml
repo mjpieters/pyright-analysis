@@ -213,6 +213,8 @@ jobs:
 
     - name: Upload attestations to GitHub and summarise
       id: github-attestations
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         source .github/scripts/github_attestations.sh
 
