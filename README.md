@@ -46,6 +46,10 @@ Full help documentation is available on the command-line:
     - Static image export as PNG, JPG, WebP, SVG or PDF.
     - Plotly JSON graph representation.
 
+## GitHub Action
+
+You can generate visualiations for your own projects in your GitHub workflow by using the [`pyright-analysis-action` action](https://github.com/marketplace/actions/pyright-analysis-action).
+
 ## Development
 
 This project uses [`uv`](https://docs.astral.sh/uv/) to handle Python dependencies and environments; use `uv sync` to get an up-to-date virtualenv with all dependencies. This includes development dependencies such as [Ruff](https://docs.astral.sh/ruff/) (used for linting and formatting) and [Pyright](https://microsoft.github.io/pyright/) (used to validate type annotations).
