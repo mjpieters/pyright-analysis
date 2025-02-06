@@ -41,7 +41,7 @@ jobs:
         echo "$PWD/.venv/bin" >> $GITHUB_PATH
 
     - name: Check file formatting
-      uses: astral-sh/ruff-action@f14634c415d3e63ffd4d550a22f037df4c734a60 # v3.1.0
+      uses: astral-sh/ruff-action@a7b1296fb5bd3ebb270731d1782bf05a97806e29 # v3.2.0
       with:
         args: "format --check"
 
