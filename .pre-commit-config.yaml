@@ -15,7 +15,7 @@ repos:
     - id: ruff-format
     - id: ruff
 - repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.397
+  rev: v1.1.398
   hooks:
   - id: pyright
 - repo: https://github.com/renovatebot/pre-commit-hooks
