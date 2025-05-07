@@ -8,8 +8,8 @@
     "config:best-practices"
   ],
   "pep723": {
-    "fileMatch": [
-      "(^|/)\\.github/scripts/convert_attestations_to_sigstore\\.py$"
+    "managerFilePatterns": [
+      "/(^|/)\\.github/scripts/convert_attestations_to_sigstore\\.py$/"
     ]
   },
   "pre-commit": {
@@ -17,11 +17,18 @@
   },
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true
     },
     {
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
       "automerge": true
     }
   ],
