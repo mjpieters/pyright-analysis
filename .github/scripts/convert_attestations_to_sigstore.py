@@ -2,7 +2,7 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#   "pypi-attestations==0.0.26"
+#   "pypi-attestations==0.0.27"
 # ]
 # [tool.uv]
 # prerelease = "allow"  # necessary for sigstore dependencies
