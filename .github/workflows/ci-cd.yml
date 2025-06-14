@@ -41,7 +41,7 @@ jobs:
         echo "$PWD/.venv/bin" >> $GITHUB_PATH
 
     - name: Check file formatting
-      uses: astral-sh/ruff-action@c6bea5606c33b5d04902374392d9233464b90660 # v3.3.0
+      uses: astral-sh/ruff-action@eaf0ecdd668ceea36159ff9d91882c9795d89b49 # v3.4.0
       with:
         args: "format --check"
 
@@ -90,13 +90,13 @@ jobs:
         uv run pytest -v --junitxml=junit.xml -o junit_family=legacy
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5.4.2
+      uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload test results to Codecov
       if: ${{ !cancelled() }}
-      uses: codecov/test-results-action@f2dba722c67b86c6caa034178c6e4d35335f6706  # v1.1.0
+      uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f  # v1.1.1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
 

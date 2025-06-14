@@ -10,12 +10,12 @@ repos:
     - id: uv-lock
     - id: uv-sync
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.3
+  rev: v0.11.13
   hooks:
     - id: ruff-format
     - id: ruff
 - repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.400
+  rev: v1.1.402
   hooks:
   - id: pyright
 - repo: https://github.com/renovatebot/pre-commit-hooks
