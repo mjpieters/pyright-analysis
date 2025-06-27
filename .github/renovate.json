@@ -30,6 +30,28 @@
         "devDependencies"
       ],
       "automerge": true
+    },
+    {
+      "description": "Group pre-commit updates into a single commit",
+      "matchManagers": [
+        "pre-commit"
+      ],
+      "groupName": "pre-commit updates"
+    },
+    {
+      "description": "Update the renovate pre-commit-hooks once a week at most.",
+      "matchPackageNames": [
+        "renovatebot/pre-commit-hooks"
+      ],
+      "schedule": "* 0-3 * * 1"
+    },
+    {
+      "description": "These packages are not abandoned just yet",
+      "matchPackageNames": [
+        "aio-libs/get-releasenote",
+        "re-actors/alls-green"
+      ],
+      "abandonmentThreshold": "5 years"
     }
   ],
   "platformAutomerge": true
