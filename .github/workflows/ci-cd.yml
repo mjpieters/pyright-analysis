@@ -22,6 +22,8 @@ jobs:
     name: "Python linting"
     permissions:
       contents: read
+    env:
+      UV_FROZEN: true
 
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -76,6 +78,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
+    env:
+      UV_FROZEN: true
 
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -96,10 +100,14 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
+      env:
+        UV_FROZEN: true
       run: |
         uv sync
 
     - name: Test with pytest
+      env:
+        UV_FROZEN: true
       run: |
         uv run pytest -v --junitxml=junit.xml -o junit_family=legacy
 
@@ -133,6 +141,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      UV_FROZEN: true
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs:
       - test-summary
