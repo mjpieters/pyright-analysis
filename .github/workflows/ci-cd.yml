@@ -41,7 +41,7 @@ jobs:
       uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
       with:
         python-version-file: "pyproject.toml"
-    
+
     - name: Check lock is up-to-date
       run: |
         uv lock --check
@@ -78,6 +78,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
+      id-token: write  # needed for the codecov actions to obtain a OIDC token
     env:
       UV_FROZEN: true
 
@@ -114,13 +115,14 @@ jobs:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        use_oidc: true
 
     - name: Upload test results to Codecov
       if: ${{ !cancelled() }}
-      uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3  # v1.2.1
+      uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        report_type: test_results
+        use_oidc: true
 
   test-summary:
     name: Test matrix status
