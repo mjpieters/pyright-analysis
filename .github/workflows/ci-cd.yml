@@ -10,20 +10,29 @@ on:
 env:
   FORCE_COLOR: 1
 
-permissions:
-  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   linting:
     runs-on: ubuntu-latest
     name: "Python linting"
+    permissions:
+      contents: read
+
     steps:
     - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      with:
+        persist-credentials: false
 
     - name: Install uv
       uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
       with:
-        enable-cache: true
+        enable-cache: | # zizmor: ignore[cache-poisoning] cache is disabled when publishing to prevent poisoning
+          ${{ github.ref_type == 'tag' && 'false' || 'auto' }}
         cache-dependency-glob: "uv.lock"
 
     - name: Set up Python 🐍
@@ -38,7 +47,7 @@ jobs:
     - name: Install dependencies
       run: |
         uv sync
-        echo "$PWD/.venv/bin" >> $GITHUB_PATH
+        echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
     - name: Check file formatting
       uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
@@ -65,14 +74,19 @@ jobs:
 
     name: Python tests (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      with:
+        persist-credentials: false
 
     - name: Install uv
       uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41  # v7.1.2
       with:
-        enable-cache: true
+        enable-cache: | # zizmor: ignore[cache-poisoning] cache is disabled when publishing to prevent poisoning
+          ${{ github.ref_type == 'tag' && 'false' || 'auto' }}
         cache-dependency-glob: "uv.lock"
         python-version: ${{ matrix.python-version }}
 
@@ -117,6 +131,8 @@ jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs:
       - test-summary
@@ -127,11 +143,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      with:
+        persist-credentials: false
 
     - name: Install uv
       uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
       with:
-        enable-cache: true
+        enable-cache: | # zizmor: ignore[cache-poisoning] cache is disabled when publishing to prevent poisoning
+          ${{ github.ref_type == 'tag' && 'false' || 'auto' }}
         cache-dependency-glob: "uv.lock"
 
     - name: Set up Python 🐍
@@ -189,6 +208,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      with:
+        persist-credentials: false
+        # fetch the full git history, but without file contents, so we can determine
+        # when the conversion script was last updated.
+        filter: blob:none
+        fetch-depth: 0
 
     - name: Download Python 🐍 distribution 📦
       uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -201,13 +226,17 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
       with:
-        enable-cache: true
+        enable-cache: | # zizmor: ignore[cache-poisoning] cache is disabled when publishing to prevent poisoning
+          ${{ github.ref_type == 'tag' && 'false' || 'auto' }}
         cache-dependency-glob: ${{ env.CONVERT_TO_SIGSTORE }}
 
     - name: Convert attestations to sigstore bundles
       run: |
-        # tell uv to only use packages released, at the latest, the time of the last
-        # commit of the script. This should help reproducibility.
+        # tell uv to only use packages released, at the latest, the time of the
+        # last commit of the script. This should help reproducibility. This is
+        # normally handled by having a lockfile, but we need renovate to support
+        # this first (see renovatebot/renovate#33591). Requires full git history
+        # (but --filter blob:none is fine).
         COMMITTED="$(git log -1 --format=%cI "$CONVERT_TO_SIGSTORE")"
         uv run --exclude-newer="$COMMITTED" "$CONVERT_TO_SIGSTORE" dist/*.attestation
 
