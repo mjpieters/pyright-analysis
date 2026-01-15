@@ -10,7 +10,7 @@
       'time_in_sec': 5.506,
       'warning_count': 0,
     }),
-    'time': datetime.datetime(2024, 12, 24, 12, 24, 13, 980000, tzinfo=TzInfo(UTC)),
+    'time': '2024-12-24T12:24:13.980000+00:00',
     'type_completeness': dict({
       'completeness_score': 0.7998366680277664,
       'exported_symbol_counts': dict({
