@@ -56,7 +56,7 @@ tasks:
     cmds:
       - |
         uv lock --locked 2>/dev/null || {
-          echo -e '\033[0;31mThe lockfile at `uv.lock` needs to be updated. To update the lockfile, run `task compile-deps`\033[0m'.
+          echo -e '\033[0;31mThe lockfile at `uv.lock` needs to be updated. To update the lockfile, run `task lock`\033[0m'.
           exit 1
         } >&2
 
@@ -91,7 +91,7 @@ tasks:
       - pyproject.toml
       - src/**/*.py
     cmds:
-      - ruff format
+      - uv run ruff format
 
   dev:format:
     aliases:
@@ -109,7 +109,6 @@ tasks:
         msg: Please install uv, see https://docs.astral.sh/uv/getting-started/installation/
     sources:
       - pyproject.toml
-      - support/pyproject.toml
     generates:
       - uv.lock
     cmds:

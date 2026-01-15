@@ -13,7 +13,7 @@ A simple cli tool to visualise the state of a Python project's _type completenes
 
 ![Sample graph output for prefect](https://raw.githubusercontent.com/mjpieters/pyright-analysis/refs/heads/main/assets/graph-screenshot.png)  <!-- refresh with `task dev:readme:refresh-graph` -->
 
-The interactive graph depicts a projects modules as a tree, with each the size of each module based on the number of exported symbols.
+The interactive graph depicts a project's modules as a tree, with each the size of each module based on the number of exported symbols.
 
 ## Usage
 
@@ -48,7 +48,7 @@ Full help documentation is available on the command-line:
 
 ## GitHub Action
 
-You can generate visualiations for your own projects in your GitHub workflow by using the [`pyright-analysis-action` action](https://github.com/marketplace/actions/pyright-analysis-action).
+You can generate visualisations for your own projects in your GitHub workflow by using the [`pyright-analysis-action` action](https://github.com/marketplace/actions/pyright-analysis-action).
 
 ## Development
 
@@ -56,7 +56,7 @@ This project uses [`uv`](https://docs.astral.sh/uv/) to handle Python dependenci
 
 ### Linting and formatting
 
-While PRs and commits on GitHub are checked for linting and formatting issues, it's easier to check for issues locally first. After running `uv sync`, run `uv run pre-commit install` to install [pre-commit](https://pre-commit.com/) hooks that will run these tools and format your changes automatically on commits. These hooks also run `uv sync` whenever you working tree changes.
+While PRs and commits on GitHub are checked for linting and formatting issues, it's easier to check for issues locally first. After running `uv sync`, run `uv run pre-commit install` to install [pre-commit](https://pre-commit.com/) hooks that will run these tools and format your changes automatically on commits. These hooks also run `uv sync` whenever your working tree changes.
 
 ### Testing
 
