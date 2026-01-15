@@ -7,7 +7,7 @@ authors = [
 ]
 license = "MIT"
 license-files = ["LICENSE.txt"]
-keywords = [ "pyright", "type-compleness", "visualisation"]
+keywords = [ "pyright", "type-completeness", "visualisation"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
