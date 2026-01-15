@@ -1,4 +1,5 @@
 import pathlib
+from datetime import datetime
 from typing import Any
 
 import pytest
@@ -129,13 +130,18 @@ def pyright_json_report() -> str:
 @pytest.fixture
 def snapshot_pydantic(snapshot: SnapshotAssertion) -> SnapshotAssertion:
     # Convert Pydantic models to their dict representation, with
-    # pathlib values converted to posix path strings.
-    def replacer(data: BaseModel | pathlib.Path, _: Any) -> dict[str, Any] | str:
+    # pathlib values converted to posix path strings, and datetime objects
+    # converted to their ISO 8601 representation.
+    def replacer(
+        data: BaseModel | pathlib.Path | datetime, _: Any
+    ) -> dict[str, Any] | str:
         match data:
             case BaseModel():
                 return data.model_dump()
             case pathlib.Path():
                 return data.as_posix()
+            case datetime():
+                return data.isoformat()
 
-    matcher = path_type(types=(BaseModel, pathlib.Path), replacer=replacer)
+    matcher = path_type(types=(BaseModel, pathlib.Path, datetime), replacer=replacer)
     return snapshot.with_defaults(matcher=matcher)
