@@ -31,7 +31,7 @@ dev = [
     "pyright>=1.1.391",
     "pytest-cov>=6.0.0",
     "pytest>=8.3.4",
-    "ruff>=0.8.4",
+    "ruff>=0.16.0",
     "syrupy>=4.8.0",
     "towncrier>=24.8.0",
     "pre-commit>=4.0.1",
@@ -79,12 +79,6 @@ venv = ".venv"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov --cov-report xml --cov-report term"
-
-[tool.ruff.lint]
-extend-select = [
-    "I",
-    "UP"
-]
 
 [tool.towncrier]
 directory = "changelog.d"
