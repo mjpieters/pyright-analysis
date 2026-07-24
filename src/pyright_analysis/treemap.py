@@ -80,7 +80,7 @@ def to_treemap(
                 )
                 for i in info
             ],
-            hovertemplate="<br>".join(
+            hovertemplate="<br>".join(  # noqa: FLY002  # an f-string won't make this more readable
                 [
                     "<b><u>%{label}</u></b>",
                     "<b>%{customdata[0]:.2%}</b>",
