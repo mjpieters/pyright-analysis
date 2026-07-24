@@ -41,7 +41,7 @@ tasks:
     status:
       - grep -q 'pre-commit\.com' .git/hooks/*
     cmds:
-      - uv run pre-commit install
+      - uvx pre-commit install
 
   dev:lint:uv-lock:
     aliases:
@@ -74,7 +74,7 @@ tasks:
     deps:
       - dev:install-precommit
     cmds:
-      - pre-commit run --files .github/renovate.json renovate-config-validator
+      - uvx pre-commit run --files .github/renovate.json renovate-config-validator
 
   dev:lint:
     aliases:
